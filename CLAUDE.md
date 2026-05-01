@@ -1,33 +1,30 @@
-# lurus-proto
+# lurus-proto (2l-proto)
 
-Cross-language protobuf definitions for Lurus service-to-service gRPC APIs.
-Generates Go code (Dart code added in Sprint D for Flutter mobile).
+跨语言 protobuf 定义，承载 Lurus 服务间 gRPC 契约。Go + Dart (Flutter) 双端生成。
 
-## Structure
+- Current scope: `identity/v1` (Account / Wallet / Entitlement)
+- Tooling: buf
+- Consumers: 2b-svc-api (via `shared/lurus-proto-go`), 2l-svc-platform (provider), 2c-app-lutu (Dart)
+
+## Directory
 
 ```
-lurus-proto/
-  proto/identity/v1/identity.proto   # Account, Wallet, Entitlement gRPC service
-  gen/go/identity/v1/                # Generated Go code
-  gen/dart/                          # Generated Dart code (Sprint D)
-  buf.yaml                          # Buf configuration
-  buf.gen.yaml                      # Code generation config
+proto/identity/v1/identity.proto   # Source of truth
+gen/go/identity/v1/                # Generated Go
+gen/dart/                          # Generated Dart (Sprint D)
+buf.yaml
+buf.gen.yaml
 ```
 
 ## Commands
 
 ```bash
-# Generate code (requires buf CLI)
-buf generate
-
-# Lint protos
-buf lint
-
-# Check breaking changes
-buf breaking --against .git#branch=main
+buf generate                              # Generate all languages
+buf lint                                  # Proto lint
+buf breaking --against .git#branch=main   # Breaking-change check
 ```
 
-## Usage in Go services
+## Usage (Go)
 
 ```go
 import identityv1 "github.com/hanmahong5-arch/lurus-proto/gen/go/identity/v1"
@@ -38,3 +35,9 @@ identityv1.RegisterIdentityServiceServer(grpcServer, myServer)
 // Client
 client := identityv1.NewIdentityServiceClient(conn)
 ```
+
+## Cross-service Rule
+
+- Proto 变更前读 `doc/coord/contracts.md` 确认消费者。
+- 破坏性变更必须在 `doc/coord/changelog.md` "Affects" 列列出所有消费服务。
+- 2b-svc-api 通过 `shared/lurus-proto-go` 引用；platform 保留本地副本。

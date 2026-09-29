@@ -1,5 +1,10 @@
 中文 | [English](README.md)
 
+> **SUNSET(2026-09-29)：** 全仓 grep monorepo 内所有 `go.mod`/import 确认本仓零消费者；
+> 其生成的 Go 桩代码也从来不是真正的 protobuf 编译产物（手写的 `.pb.go`，无
+> `protoimpl`）。`identity.v1` 的唯一真源现在是 platform 仓内的
+> `2l-svc-platform/proto/proto/identity/v1/identity.proto`。请勿再接新消费者——本仓等待归档。
+
 # lurus-proto
 
 Lurus 内部服务间 `identity.v1` gRPC 契约的跨语言 protobuf 源。

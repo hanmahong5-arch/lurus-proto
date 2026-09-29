@@ -1,5 +1,12 @@
 [中文](README.zh-CN.md) | English
 
+> **SUNSET (2026-09-29):** this repository has zero downstream consumers monorepo-wide
+> (verified by grepping every `go.mod`/import across the Lurus monorepo) and its generated
+> Go stubs were never a real wire-compatible protobuf build (hand-maintained `.pb.go`
+> layout, no `protoimpl`). The single source of truth for `identity.v1` is now
+> `2l-svc-platform/proto/proto/identity/v1/identity.proto` inside the platform repo. Do not
+> add new consumers here — this repo is pending archival.
+
 # lurus-proto
 
 Cross-language protobuf source of truth for the `identity.v1` gRPC contract used across Lurus internal services.
